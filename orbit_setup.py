@@ -44,15 +44,9 @@ def create_directory_structure():
         domain_dir = vault_path / f"{domain_num}-{domain_name}"
         domain_dir.mkdir(exist_ok=True)
         
-        # Create domain dashboard file
-        create_domain_dashboard(domain_dir, domain_name, domain_num)
-        
         # Create the inbox directory in each domain
         inbox_dir = domain_dir / config["hidden_inbox"]
         inbox_dir.mkdir(exist_ok=True)
-
-    # Copy template files to Templates directory (skipped since files are already there)
-    # copy_templates(templates_dir)
     
     # Create navigation file
     create_orbit_navigation(vault_path)
@@ -97,6 +91,26 @@ track_number: 7
 
 Main dashboard for {domain_name} domain.
 
+## Create
+
+```button
+name Create Relating Note
+type append template
+action C1yaml
+```
+
+```button
+name Create Satelliting Directory 
+type append template
+action Create Satelliting Directory
+```
+
+```button
+name Create Orbiting Directory
+type append template
+action Create Orbiting Directory
+```
+
 ## Designated Projects
 
 ```dataview
@@ -125,7 +139,7 @@ SORT created DESC
 LIMIT 10
 ```
 
-## Recent Notes in Projects
+## Recent Activity
 
 ```dataview
 TABLE object, orbits as "Projects", created
@@ -133,20 +147,6 @@ FROM "{str(domain_dir.relative_to(Path(config['vault_path'])))}"
 WHERE object != "project" AND object != "domain"
 SORT created DESC
 LIMIT 10
-```
-
-## Create New Project
-
-```button
-name Create Satelliting Directory 
-type append template
-action Create Satelliting Directory
-```
-
-```button
-name Create Orbiting Directory
-type append template
-action Create Orbiting Directory
 ```
 """
         
